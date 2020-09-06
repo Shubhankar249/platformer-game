@@ -23,7 +23,7 @@ let game = new Phaser.Game(config);
 function preload() {
     this.load.image('ground', 'assets/topground.png');
     this.load.image('sky', 'assets/background.png');
-    // this.load.image('ground', 'assets/topground.png');
+    this.load.spritesheet('player', 'assets/dude.png', {frameWidth: 32, frameHeight:48});   // spritesheet helps to simulate movement by using mult frames for 1 img. There are 9 frames with total width of 288px=> 32each (Spritesheets can be downloaded from openGameArt.org)
     // this.load.image('ground', 'assets/topground.png');
     // this.load.image('ground', 'assets/topground.png');
     // this.load.image('ground', 'assets/topground.png');
@@ -41,7 +41,16 @@ function create() {
     sky.setOrigin(0, 0);
     sky.displayWidth = W; sky.displayHeight = H-128;
 
+    // add a player obj on which gravity works
+    let player = this.physics.add.sprite(100, 100, 'player', 4); // 4 is the default frame
 
+    // add physics to ground also for collisions
+    this.physics.add.existing(ground, true);    // 2nd param is to make object static in nature does same thing as next 2 lines
+    // ground.body.allowGravity = false;
+    // ground.body.immovable = true;
+
+    // add a collision detection for ground and player
+    this.physics.add.collider(ground, player);
 }
 
 function update () {
