@@ -42,7 +42,8 @@ function create() {
     sky.displayWidth = W; sky.displayHeight = H-128;
 
     // add a player obj on which gravity works
-    let player = this.physics.add.sprite(100, 100, 'player', 4); // 4 is the default frame
+    this.player = this.physics.add.sprite(100, 100, 'player', 4); // 4 is the default frame
+    this.player.setBounce(0.25);
 
     // adding fruits which will fall from sky
     let fruits = this.physics.add.group({
@@ -51,6 +52,9 @@ function create() {
         repeat: 8,
         setXY: {x:15,y:5, stepX:100}    // 8 apples 100px apart will fall from 5px Height
     })
+    // adding random elasticity to each fruit
+    fruits.children.iterate(f=> f.setBounce(Phaser.Math.FloatBetween(0.2, 0.6)));
+
 
     // add physics to ground also for collisions
     this.physics.add.existing(ground, true);    // 2nd param is to make object static in nature does same thing as next 2 lines
@@ -58,7 +62,7 @@ function create() {
     // ground.body.immovable = true;
 
     // add a collision detection for ground and player
-    this.physics.add.collider(ground, player);
+    this.physics.add.collider(ground, this.player);
     this.physics.add.collider(ground, fruits);
 }
 
