@@ -19,6 +19,11 @@ let config = {
     }
 }
 
+let game_config = {
+    player_speed : 100,
+    player_jump: -400
+}
+
 let game = new Phaser.Game(config);
 
 function preload() {
@@ -46,6 +51,10 @@ function create() {
     this.player = this.physics.add.sprite(100, 100, 'player', 4); // 4 is the default frame
     this.player.setBounce(0.25);
 
+    // adding movement to players
+    this.cursors = this.input.keyboard.createCursorKeys();  // function in phaser for keyboard press event listening
+
+
     // adding fruits which will fall from sky
     let fruits = this.physics.add.group({
         key:'apple',
@@ -68,12 +77,23 @@ function create() {
     // ground.body.immovable = true;
 
     // add a collision detection for ground and player
-    this.physics.add.collider(ground, this.player);
+    //this.physics.add.collider(ground, this.player);
     //this.physics.add.collider(ground, fruits);    // since ground is now part of platforms this line can be removed
     this.physics.add.collider(platforms, fruits);
     this.physics.add.collider(platforms, this.player);
+    //this.physics.add.collider(fruits, this.player);
 }
 
 function update () {
+    if (this.cursors.left.isDown) {
+        this.player.setVelocityX(-game_config.player_speed);
+    } else if (this.cursors.right.isDown) {
+        this.player.setVelocityX(game_config.player_speed);
+    } else if (this.cursors.up.isDown && this.player.body.touching.down) { // add jump only when player is on platform
+        this.player.setVelocityY(game_config.player_jump);
+    } else {
+        this.player.setVelocityX(0);
+    }
+
 
 }
