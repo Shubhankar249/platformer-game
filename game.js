@@ -20,8 +20,8 @@ let config = {
 }
 
 let game_config = {
-    player_speed : 100,
-    player_jump: -400
+    player_speed : 150,
+    player_jump: -600
 }
 
 let game = new Phaser.Game(config);
@@ -54,6 +54,24 @@ function create() {
     // adding movement to players
     this.cursors = this.input.keyboard.createCursorKeys();  // function in phaser for keyboard press event listening
 
+    // adding movement animations
+    this.anims.create({
+       key: 'left',
+       frames: this.anims.generateFrameNumbers('player', {start: 0, end: 3}),
+       frameRate: 10,   // 10/s
+       repeat: -1
+    });
+    this.anims.create({
+        key: 'right',
+        frames: this.anims.generateFrameNumbers('player', {start: 5, end: 8}),
+        frameRate: 10,   // 10/s
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'center',
+        frames: [{key:'player', frame:4}],
+        //frameRate: 10,   // 10/s
+    });
 
     // adding fruits which will fall from sky
     let fruits = this.physics.add.group({
@@ -87,13 +105,14 @@ function create() {
 function update () {
     if (this.cursors.left.isDown) {
         this.player.setVelocityX(-game_config.player_speed);
+        this.player.anims.play('left', true);
     } else if (this.cursors.right.isDown) {
         this.player.setVelocityX(game_config.player_speed);
+        this.player.anims.play('right', true);
     } else if (this.cursors.up.isDown && this.player.body.touching.down) { // add jump only when player is on platform
         this.player.setVelocityY(game_config.player_jump);
     } else {
         this.player.setVelocityX(0);
+        this.player.anims.play('center', true);
     }
-
-
 }
