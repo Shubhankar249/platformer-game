@@ -50,6 +50,7 @@ function create() {
     // add a player obj on which gravity works
     this.player = this.physics.add.sprite(100, 100, 'player', 4); // 4 is the default frame
     this.player.setBounce(0.25);
+    this.player.setCollideWorldBounds(true);    // player can't go out of the screen
 
     // adding movement to players
     this.cursors = this.input.keyboard.createCursorKeys();  // function in phaser for keyboard press event listening
@@ -101,6 +102,13 @@ function create() {
     this.physics.add.collider(platforms, this.player);
     this.physics.add.overlap(this.player, fruits, eatFruit, null, this);    // overlap function in phaser that takes two objects that overlap and callback fn to run when they overlap
                                                                 // and one more callback fn that is checked for true before running the above fn and a context as args
+
+    // crating camera to follow player
+    this.cameras.main.setBounds(0, 0, W, H);
+    this.physics.world.setBounds(0, 0, W, H);
+
+    this.cameras.main.startFollow(this.player, true, true);
+    this.cameras.main.setZoom(1.3);
 }
 
 function update () {
