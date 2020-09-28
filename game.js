@@ -8,7 +8,8 @@ let config = {
     physics: {  // physics engine provided by Phaser for laws of motion
         default: 'arcade',
         arcade: {
-            gravity: {y:1000}
+            gravity: {y: 1000},
+            debug: true,    // this makes the boundary border for all objects visible
         }
     },
     scene: {
@@ -55,6 +56,14 @@ function create() {
     // adding random elasticity to each fruit
     fruits.children.iterate(f=> f.setBounce(Phaser.Math.FloatBetween(0.2, 0.6)));
 
+    // creating more platforms
+    let platforms  = this.physics.add.staticGroup();
+    platforms.create(600, 350,'ground').setScale(2, 0.5).refreshBody();
+    platforms.create(110, 200,'ground').setScale(1.8, 0.4).refreshBody();
+
+
+
+
 
     // add physics to ground also for collisions
     this.physics.add.existing(ground, true);    // 2nd param is to make object static in nature does same thing as next 2 lines
@@ -64,6 +73,7 @@ function create() {
     // add a collision detection for ground and player
     this.physics.add.collider(ground, this.player);
     this.physics.add.collider(ground, fruits);
+    this.physics.add.collider(platforms, fruits);
 }
 
 function update () {
