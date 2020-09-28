@@ -31,7 +31,7 @@ function preload() {
     this.load.image('sky', 'assets/background.png');
     this.load.spritesheet('player', 'assets/dude.png', {frameWidth: 32, frameHeight:48});   // spritesheet helps to simulate movement by using mult frames for 1 img. There are 9 frames with total width of 288px=> 32each (Spritesheets can be downloaded from openGameArt.org)
     this.load.image('apple', 'assets/apple.png');
-    // this.load.image('ground', 'assets/topground.png');
+    this.load.image('ray', 'assets/ray.png');
     // this.load.image('ground', 'assets/topground.png');
     // this.load.image('ground', 'assets/topground.png');
 }
@@ -46,6 +46,30 @@ function create() {
     let sky = this.add.sprite(0, 0, 'sky');
     sky.setOrigin(0, 0);
     sky.displayWidth = W; sky.displayHeight = H-128;
+    sky.depth = -2;
+
+    // crating sunset effect using ray as tweens
+    let rays=[];
+    for (let i=-10; i<=10; i++) {
+        let ray = this.add.sprite(W/2, H-128, 'ray');
+        ray.setOrigin(0.5, 1);  // midlle- bottom of image
+        ray.alpha = 0.25;
+        ray.displayHeight = H*1.2;
+        ray.angle = i*10;
+        ray.depth = -1;
+        rays.push(ray);
+    }
+
+    // using tween
+    this.tweens.add({
+        targets:rays,
+        props: {
+            angle:{value: "+=10"}
+        },
+        duration:6000,
+        repeat: -1
+    });
+
 
     // add a player obj on which gravity works
     this.player = this.physics.add.sprite(100, 100, 'player', 4); // 4 is the default frame
