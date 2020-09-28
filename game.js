@@ -9,7 +9,7 @@ let config = {
         default: 'arcade',
         arcade: {
             gravity: {y: 1000},
-            debug: true,    // this makes the boundary border for all objects visible
+            debug: false,    // debug: true makes the boundary border for all objects visible
         }
     },
     scene: {
@@ -99,7 +99,8 @@ function create() {
     //this.physics.add.collider(ground, fruits);    // since ground is now part of platforms this line can be removed
     this.physics.add.collider(platforms, fruits);
     this.physics.add.collider(platforms, this.player);
-    //this.physics.add.collider(fruits, this.player);
+    this.physics.add.overlap(this.player, fruits, eatFruit, null, this);    // overlap function in phaser that takes two objects that overlap and callback fn to run when they overlap
+                                                                // and one more callback fn that is checked for true before running the above fn and a context as args
 }
 
 function update () {
@@ -115,4 +116,8 @@ function update () {
         this.player.setVelocityX(0);
         this.player.anims.play('center', true);
     }
+}
+
+function eatFruit(player, fruit) {
+    fruit.disableBody(true, true);  // 2args for disable behaviour and hide objects
 }
