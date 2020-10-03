@@ -32,8 +32,6 @@ function preload() {
     this.load.spritesheet('player', 'assets/dude.png', {frameWidth: 32, frameHeight:48});   // spritesheet helps to simulate movement by using mult frames for 1 img. There are 9 frames with total width of 288px=> 32each (Spritesheets can be downloaded from openGameArt.org)
     this.load.image('apple', 'assets/apple.png');
     this.load.image('ray', 'assets/ray.png');
-    // this.load.image('ground', 'assets/topground.png');
-    // this.load.image('ground', 'assets/topground.png');
 }
 
 function create() {
@@ -48,11 +46,11 @@ function create() {
     sky.displayWidth = W; sky.displayHeight = H-128;
     sky.depth = -2;
 
-    // crating sunset effect using ray as tweens
+    // creating sunset effect using ray as tweens
     let rays=[];
     for (let i=-10; i<=10; i++) {
         let ray = this.add.sprite(W/2, H-128, 'ray');
-        ray.setOrigin(0.5, 1);  // midlle- bottom of image
+        ray.setOrigin(0.5, 1);  // middle- bottom of image
         ray.alpha = 0.25;
         ray.displayHeight = H*1.2;
         ray.angle = i*10;
@@ -125,14 +123,14 @@ function create() {
     this.physics.add.collider(platforms, fruits);
     this.physics.add.collider(platforms, this.player);
     this.physics.add.overlap(this.player, fruits, eatFruit, null, this);    // overlap function in phaser that takes two objects that overlap and callback fn to run when they overlap
-                                                                // and one more callback fn that is checked for true before running the above fn and a context as args
+                                                                            // and one more callback fn that is checked for true before running the above fn and a context as args
 
     // crating camera to follow player
     this.cameras.main.setBounds(0, 0, W, H);
     this.physics.world.setBounds(0, 0, W, H);
 
     this.cameras.main.startFollow(this.player, true, true);
-    this.cameras.main.setZoom(1.3);
+    this.cameras.main.setZoom(1);
 }
 
 function update () {
